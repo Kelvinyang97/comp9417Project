@@ -48,7 +48,7 @@ y_train = transformed_labels
 # tune: regularization strength
 parameters = {'C': [0.001, 0.01, 0.1, 1, 5, 10]} 
 # test on grid search 
-grid_search = GridSearchCV(LogisticRegression(), param_grid = parameters, scoring = 'accuracy', cv=3)
+grid_search = GridSearchCV(LogisticRegression(), param_grid = parameters, scoring = 'accuracy', cv = 3)
 estimator = grid_search.fit(x_train, y_train)
 best_reg = estimator.best_params_['C']
 best_regression = LogisticRegression(C = best_reg)
@@ -78,4 +78,5 @@ print(f"Validation score after tf_idf : {cv_score}")
  
 
 # tune cv size think this may have to be done iteratively ? 
+
 
