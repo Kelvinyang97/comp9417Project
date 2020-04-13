@@ -12,7 +12,7 @@ from sklearn import svm
 
 
 #Read in data
-df = pd.read_csv('training.csv')
+df = pd.read_csv('data/training.csv')
 temp_features_df = np.array(df.drop(['article_number','topic'], axis = 1))
 labels_df = df.drop(['article_number', 'article_words'], axis = 1).to_numpy()
 
