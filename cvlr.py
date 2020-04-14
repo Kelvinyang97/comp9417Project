@@ -8,16 +8,17 @@ from sklearn.model_selection import cross_val_score
 from sklearn.linear_model import LogisticRegressionCV
 
 #Get Access to data
-TRAININGDATA = Parse('data/training.csv', tfidf=True)
-TESTDATA = Parse('data/test.csv', tfidf=True)
+DATA = Parse('data/', tfidf=True, max_df = 0.3)
 
 #Assign features
-bagOfWords = TRAININGDATA.features[0]
-bagNames = TRAININGDATA.features[1]
+bagOfWords = DATA.features[0]
+testBag = DATA.features[1]
+bagNames = DATA.features[2]
 
 #Assign Labels
-transLabels = TRAININGDATA.labels[0]
-listLabels = TRAININGDATA.labels[1]
+transLabels = DATA.labels[0]
+testLabels = DATA.labels[1]
+listLabels = DATA.labels[2]
 
 ### MODEL DEFAULS ###
 # Cs = 10
@@ -42,4 +43,4 @@ CVLRModel = LogisticRegressionCV(n_jobs=-3, multi_class = 'multinomial')
 CVLRModel.fit(bagOfWords, transLabels)
 
 print( 'Score on training data: ', CVLRModel.score(bagOfWords, transLabels) )
-print( 'Score on test data: ', CVLRModel.score(TESTDATA.features[0], TESTDATA.labels[0]) )
+print( 'Score on test data: ', CVLRModel.score(testBag, testLabels) )
