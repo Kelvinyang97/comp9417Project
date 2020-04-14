@@ -92,20 +92,20 @@ def article_freq(labels, label_names, colours = ["#C00000", "#FF0000", "#FFC000"
 
 
 
-TRAINCSV = 'training.csv'
-TESTCSV = 'test.csv'
+TRAINCSV = 'data/training.csv'
+TESTCSV = 'data/test.csv'
 colours = ["#C00000", "#FF0000", "#FFC000", "#FFFF00", "#92D050", 
            "#00B050", "#00B0F0", "#0070C0", "#7030A0", "#000000", "#BFBFBF"]
 
 #Preprocess features and labels 
-f = preproc(TRAINCSV, 'BAG_OF_WORDS', tfidf = True)
-l = preproc(TRAINCSV, 'LABELLING')
+fl = preproc(TRAINCSV, tfidf = True)
+
 
 #Store output into variables
-train_features = f.features[0]
-feature_names = f.features[1]
-train_labels = l.labels[0]
-list_of_labels = l.labels[1]
+train_features = fl.features[0]
+feature_names = fl.features[1]
+train_labels = fl.labels[0]
+list_of_labels = fl.labels[1]
 
 print(train_features)
 

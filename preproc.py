@@ -29,12 +29,14 @@ class preproc:
         #float in [0, 1.0] max_df = ignore features that have a frequency lower
         #   than this value
         #integer max_features = returns the highest n
+
+        #Cleaning the reading process (only needs to happen once)
         
+        featuresUnprocessed, labelsUnprocessed = self.read_data(filename)
         
-        self.features = self.wordbag(filename, tfidf = tfidf, minmax = minmax,
-                                     min_range = min_range, max_range = max_range, 
-                                     max_df = max_df, min_df = min_df, max_features = max_features)
-        self.labels = self.labelling(filename)
+        self.features = self.wordbag(featuresUnprocessed, tfidf = tfidf, minmax = minmax, min_range = min_range, max_range = max_range, max_df = max_df, min_df = min_df, max_features = max_features)
+                                     
+        self.labels = self.labelling(labelsUnprocessed)
 
     
     
@@ -56,14 +58,11 @@ class preproc:
 
 
 
-    def wordbag(self, filename, tfidf = False, minmax = False, min_range = 1, 
+    def wordbag(self, features, tfidf = False, minmax = False, min_range = 1,
                 max_range = 1, max_df = 1.0, min_df = 1, max_features = None):
         #Takes a csv file as input along with CountVectoriser inputs and returns:
         #1. a bag of words as a scipy sparse matrix and
         #2. a list of all the words in the corpus
-        
-        #Read data in
-        features, labels = self.read_data(filename)
         
         #Transform corpus into a bag of words
         if tfidf:
@@ -72,6 +71,7 @@ class preproc:
         else:
             count = CountVectorizer(ngram_range = (min_range, max_range), max_df = max_df, 
                                     min_df = min_df, max_features = max_features)
+                                    
         bag_of_words = count.fit_transform(features)
         
         #Scale bag of words using min max normalisation
@@ -86,13 +86,10 @@ class preproc:
     
     
     
-    def labelling(self, filename):
+    def labelling(self, labels):
         #Takes a csv file as input and returns numpy arrays of:
         #1. transformed labels from strings to integers and 
         #2. unique list of topics in alphabetical order
-        
-        #Read data in
-        features, labels = self.read_data(filename)
         
         #Initialise label encoder
         le = preprocessing.LabelEncoder()
