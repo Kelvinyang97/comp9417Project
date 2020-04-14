@@ -23,9 +23,9 @@ class preproc:
         #   out of the bag. 'english' list has known issues
         #integer min_range = min number of n-grams to consider
         #integer max_range = max number of n-grams to consider
-        #float in [0, 1.0] min_df = ignore features that have a frequency higher
+        #float in [0, 1.0] max_df = ignore features that have a frequency higher
         #   than this value
-        #float in [0, 1.0] max_df = ignore features that have a frequency lower
+        #float in [0, 1.0] min_df = ignore features that have a frequency lower
         #   than this value
         #integer max_features = returns the highest n
 

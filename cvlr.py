@@ -6,14 +6,21 @@ from preproc import preproc as Parse
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, classification_report
 from sklearn.model_selection import cross_val_score
 from sklearn.linear_model import LogisticRegressionCV
+from sklearn import preprocessing
 
 #Get Access to data
-DATA = Parse('data/', tfidf=True, max_df = 0.3)
+DATA = Parse('data/', tfidf=True, max_range = 2, max_features = 1000)
 
 #Assign features
 bagOfWords = DATA.features[0]
 testBag = DATA.features[1]
 bagNames = DATA.features[2]
+
+#AttemptScaling
+#scaler = preprocessing.StandardScaler(with_mean=False).fit(bagOfWords)
+#bagOfWords = scaler.transform(bagOfWords)
+#testBag = scaler.transform(testBag)
+
 
 #Assign Labels
 transLabels = DATA.labels[0]
@@ -39,7 +46,7 @@ listLabels = DATA.labels[2]
 # random_state = None (good for ensure consistent build)
 # l1_ratios = None
 
-CVLRModel = LogisticRegressionCV(n_jobs=-3, multi_class = 'multinomial')
+CVLRModel = LogisticRegressionCV(n_jobs=-3, multi_class = 'multinomial', max_iter = 1000)
 CVLRModel.fit(bagOfWords, transLabels)
 
 print( 'Score on training data: ', CVLRModel.score(bagOfWords, transLabels) )
