@@ -7,10 +7,10 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 from sklearn.model_selection import cross_val_score
 from sklearn.linear_model import LogisticRegressionCV
 from sklearn import preprocessing
-from sklearn.manifold import TSNE
+from sklearn.decomposition import TruncatedSVD
 
 #Get Access to data
-DATA = Parse('data/', tfidf=True, max_range = 1)
+DATA = Parse('data/', tfidf=True, max_range = 2, min_df = 10)
 
 #Assign features
 bagOfWords = DATA.features[0]
@@ -18,10 +18,10 @@ testBag = DATA.features[1]
 bagNames = DATA.features[2]
 
 #AttemptScaling
-#transformer = TSNE(n_components = 10, method='exact', n_jobs=-3)
-#transformer.fit(bagOfWords)
-#bagOfWords = transformer.transform(bagOfWords)
-#testBag = transformer.transform(testBag)
+transformer = TruncatedSVD(n_components = 100, n_iter = 10)
+transformer.fit(bagOfWords)
+bagOfWords = transformer.transform(bagOfWords)
+testBag = transformer.transform(testBag)
 
 
 #Assign Labels
@@ -48,7 +48,7 @@ listLabels = DATA.labels[2]
 # random_state = None (good for ensure consistent build)
 # l1_ratios = None
 
-CVLRModel = LogisticRegressionCV( n_jobs=-3, multi_class = 'multinomial', max_iter = 1000)
+CVLRModel = LogisticRegressionCV( n_jobs=-3, multi_class = 'multinomial', max_iter = 2000)
 CVLRModel.fit(bagOfWords, transLabels)
 
 print( 'Score on training data: ', CVLRModel.score(bagOfWords, transLabels) )
