@@ -32,7 +32,7 @@ y_test = file.labels[1]
 
 # In[24]:
 
-
+#This works a bit better
 """mnbc = MultinomialNB()
 mnbc.fit(x_train, y_train)
 mnbc_pred = mnbc.predict(x_test)
