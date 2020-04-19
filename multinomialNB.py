@@ -20,7 +20,7 @@ from sklearn.linear_model import LogisticRegression
 
 
 from preproc import preproc
-file = preproc(filepath = '', trainname = 'data/training.csv', testname = 'data/test.csv', tfidf = False, minmax = False, min_range = 1,
+file = preproc(filepath = '', trainname = 'data/training.csv', testname = 'data/test.csv', tfidf = True, minmax = False, min_range = 1,
                  max_range = 1, max_df = 1.0, min_df =1, max_features = None)
 #x_train:bag_of_words
 x_train = file.features[0]
