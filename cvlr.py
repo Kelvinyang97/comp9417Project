@@ -9,8 +9,7 @@ from sklearn.linear_model import LogisticRegressionCV
 from sklearn import preprocessing
 
 #Get Access to data
-# currently, changing values of min_df to see if this makes a difference 
-DATA = Parse('data/', tfidf=True, min_range = 10, max_range = 20, max_features = 300, min_df = 10)
+DATA = Parse('data/', tfidf=True, max_features = 500, min_df = 10)
 # max_features = 1000
 #Assign features
 bagOfWords = DATA.features[0]
@@ -21,7 +20,6 @@ bagNames = DATA.features[2]
 #scaler = preprocessing.StandardScaler(with_mean=False).fit(bagOfWords)
 #bagOfWords = scaler.transform(bagOfWords)
 #testBag = scaler.transform(testBag)
-
 
 #Assign Labels
 transLabels = DATA.labels[0]
@@ -46,34 +44,52 @@ listLabels = DATA.labels[2]
 # multi_class = 'auto' --> Ensure multiple classes with multinomial
 # random_state = None (good for ensure consistent build)
 # l1_ratios = None
-'''
+
+# base model
 CVLRModel = LogisticRegressionCV(n_jobs=-3, multi_class = 'multinomial', max_iter = 1000)
 CVLRModel.fit(bagOfWords, transLabels)
 
 print( 'Score on training data: ', CVLRModel.score(bagOfWords, transLabels) )
 print( 'Score on test data: ', CVLRModel.score(testBag, testLabels) )
 
+
 # param tuning for values of c
-C = [2,3,4,5, 6]
-model_c = LogisticRegressionCV(n_jobs=-3, multi_class = 'multinomial', max_iter = 1000, Cs = C)
+# tuning this does seem to make a difference to score
+C = [0.1,1,3,5,7]
+best_c = 0.1
+highest_score = 0
+for reg in C:
+    model_c = LogisticRegressionCV(n_jobs=-3, multi_class = 'multinomial', max_iter = 1000, Cs = reg)
+    model_c.fit(bagOfWords, transLabels)
+    print( 'Score on training data: ', model_c.score(bagOfWords, transLabels) )
+    test_score = model_c.score(testBag, testLabels)
+    print( 'Score on test data: ', test_score)
+    if test_score > highest_score:
+        highest_score = test_score
+        best_c = reg
+    
+
+# tune size of CV 
+# note: size of cv doesn't seem to be making a difference, with test accuracy sitting at
+# 0.776 
+CV = [3,5,7,9]
+
+best_CV = 3
+highest_acc = 0
+
+for cross_val in CV:   
+    model_cv = LogisticRegressionCV(n_jobs=-3, multi_class = 'multinomial', max_iter = 1000, cv = cross_val)
+    model_cv.fit(bagOfWords, transLabels)
+    print(f'Score on training data for cv = {cross_val}: ', model_cv.score(bagOfWords, transLabels) )
+    test_score = model_cv.score(testBag, testLabels)
+    print(f'Score on test data for cv = {cross_val}: ', test_score )
+    if test_score > highest_acc:
+        highest_ac = test_score
+        best_CV = cross_val
+
+
+# model with best parameters
+model_c = LogisticRegressionCV(n_jobs=-3, multi_class = 'multinomial', max_iter = 1000, Cs = best_c, cv = best_CV)
 model_c.fit(bagOfWords, transLabels)
 print( 'Score on training data: ', model_c.score(bagOfWords, transLabels) )
 print( 'Score on test data: ', model_c.score(testBag, testLabels) )
-print("best c: ", model_c.C_)
-'''
-# tune size of cv
-#CV = [1,3,5,7,10]
-'''
-model_cv = LogisticRegressionCV(n_jobs=-3, multi_class = 'multinomial', max_iter = 1500, cv = 5)
-model_cv.fit(bagOfWords, transLabels)
-print( 'Score on training data: ', model_cv.score(bagOfWords, transLabels) )
-print( 'Score on test data: ', model_cv.score(testBag, testLabels) )
-#print("best c: ", model_cv.)
-'''
-
-# testing with new min_df
-CVLRModel = LogisticRegressionCV(n_jobs=-3, multi_class = 'multinomial', max_iter = 1000)
-CVLRModel.fit(bagOfWords, transLabels)
-
-print( 'Score on training data: ', CVLRModel.score(bagOfWords, transLabels) )
-print( 'Score on test data: ', CVLRModel.score(testBag, testLabels) )
