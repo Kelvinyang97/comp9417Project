@@ -7,26 +7,27 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 from sklearn.model_selection import cross_val_score
 from sklearn.linear_model import LogisticRegressionCV
 from sklearn import preprocessing
+from sklearn.manifold import TSNE
 
 #Get Access to data
 DATA = Parse('data/', tfidf=True, max_features = 500, min_df = 10)
-# max_features = 1000
 #Assign features
 bagOfWords = DATA.features[0]
 testBag = DATA.features[1]
 bagNames = DATA.features[2]
 
 #AttemptScaling
-#scaler = preprocessing.StandardScaler(with_mean=False).fit(bagOfWords)
-#bagOfWords = scaler.transform(bagOfWords)
-#testBag = scaler.transform(testBag)
+#transformer = TSNE(n_components = 10, method='exact', n_jobs=-3)
+#transformer.fit(bagOfWords)
+#bagOfWords = transformer.transform(bagOfWords)
+#testBag = transformer.transform(testBag)
 
 #Assign Labels
 transLabels = DATA.labels[0]
 testLabels = DATA.labels[1]
 listLabels = DATA.labels[2]
 
-### MODEL DEFAULS ###
+### MODEL DEFAULTS ###
 # Cs = 10
 # fit_intercept = T
 # cv = 5-fold
@@ -39,7 +40,7 @@ listLabels = DATA.labels[2]
 # class_weight = none
 # n_jobs = None --> This is the number of cores/processors being used to solve it
 # -1 means ALL processors, -2 means all but 1, -3 all but 2...
-# refit = T
+# refit = Tclea
 # intercept_scaling = 1.0
 # multi_class = 'auto' --> Ensure multiple classes with multinomial
 # random_state = None (good for ensure consistent build)
