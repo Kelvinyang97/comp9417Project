@@ -56,9 +56,9 @@ print( 'Score on test data: ', CVLRModel.score(testBag, testLabels) )
 
 # param tuning for values of c
 # tuning this does seem to make a difference to score
-C = [0.1,1,3,5,7]
+C = [1,3,5,7]
 best_c = 0.1
-highest_score = 0
+highest_score = 0.0
 for reg in C:
     model_c = LogisticRegressionCV(n_jobs=-3, multi_class = 'multinomial', max_iter = 1000, Cs = reg)
     model_c.fit(bagOfWords, transLabels)
