@@ -10,7 +10,7 @@ from sklearn.decomposition import TruncatedSVD
 
 
 #Get Access to data
-for max in range(8000, 11000, 1000):
+for max in range(2000, 11000, 1000):
     DATA = Parse('data/', tfidf=True, min_df = 10, max_features = max)
     #Assign features
     bagOfWords = DATA.features[0]
