@@ -1,0 +1,72 @@
+>>> print("The best hyperparameters from Random Search are:")
+The best hyperparameters from Random Search are:
+>>> print(random_search.best_params_)
+{'kernel': 'rbf', 'gamma': 0.01, 'probability': True, 'C': 0.001, 'degree': 2}
+>>> print("")
+
+>>> print("The mean accuracy of a model with these hyperparameters is:")
+The mean accuracy of a model with these hyperparameters is:
+>>> print(random_search.best_score_)
+0.4983158005178561
+>>> 
+
+
+>>> grid_search.fit(x_train, y_train)
+Fitting 3 folds for each of 9 candidates, totalling 27 fits
+[Parallel(n_jobs=1)]: Using backend SequentialBackend with 1 concurrent workers.
+[Parallel(n_jobs=1)]: Done  27 out of  27 | elapsed: 40.7min finished
+GridSearchCV(cv=ShuffleSplit(n_splits=3, random_state=8, test_size=0.33, train_size=None),
+             error_score=nan,
+             estimator=SVC(C=1.0, break_ties=False, cache_size=200,
+                           class_weight=None, coef0=0.0,
+                           decision_function_shape='ovr', degree=3,
+                           gamma='scale', kernel='rbf', max_iter=-1,
+                           probability=False, random_state=8, shrinking=True,
+                           tol=0.001, verbose=False),
+             iid='deprecated', n_jobs=None,
+             param_grid=[{'C': [0.0005, 0.001, 0.0015],
+                          'gamma': [0.005, 0.01, 0.015], 'kernel': ['rbf'],
+                          'probability': [True]}],
+             pre_dispatch='2*n_jobs', refit=True, return_train_score=False,
+             scoring='accuracy', verbose=1)
+>>> 
+
+GridSearchCV(cv=ShuffleSplit(n_splits=3, random_state=8, test_size=0.33, train_size=None),
+             error_score=nan,
+             estimator=SVC(C=1.0, break_ties=False, cache_size=200,
+                           class_weight=None, coef0=0.0,
+                           decision_function_shape='ovr', degree=3,
+                           gamma='scale', kernel='rbf', max_iter=-1,
+                           probability=False, random_state=8, shrinking=True,
+                           tol=0.001, verbose=False),
+             iid='deprecated', n_jobs=None,
+             param_grid=[{'C': [0.0005, 0.001, 0.0015],
+                          'gamma': [0.005, 0.01, 0.015], 'kernel': ['rbf'],
+                          'probability': [True]}],
+             pre_dispatch='2*n_jobs', refit=True, return_train_score=False,
+             scoring='accuracy', verbose=1)
+>>> print(grid_search.best_params_)
+{'gamma': 0.005, 'kernel': 'rbf', 'probability': True, 'C': 0.0005}
+
+
+>>> best_svc.fit(x_train,y_train)
+SVC(C=0.0005, break_ties=False, cache_size=200, class_weight=None, coef0=0.0,
+    decision_function_shape='ovr', degree=3, gamma=0.005, kernel='rbf',
+    max_iter=-1, probability=True, random_state=8, shrinking=True, tol=0.001,
+    verbose=False)
+>>> #get the prediction
+... 
+>>> svc_pred = best_svc.predict(x_test)
+>>> # Training accuracy
+... 
+>>> print("The training accuracy is: ")
+The training accuracy is: 
+>>> 
+>>> print(accuracy_score(y_train, best_svc.predict(x_train)))
+0.4983157894736842
+>>> # Test accuracy
+... 
+>>> print("The test accuracy is: ")
+The test accuracy is: 
+>>> print(accuracy_score(y_test, svc_pred))
+0.532

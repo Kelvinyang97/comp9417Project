@@ -7,7 +7,7 @@
 #SVM
 # First create the base model to tune
 from sklearn import svm
-from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
 import numpy as np
 from sklearn.metrics import classification_report, accuracy_score
 from sklearn.model_selection import ShuffleSplit
@@ -43,16 +43,55 @@ y_test = file.labels[1]
 
 # In[ ]:
 
+# first find the rough regions of parameters with randomized search
+# C
+C = [.0001, .001, .01]
+# gamma
+gamma = [.0001, .001, .01, .1, 1, 10, 100]
+# degree
+degree = [1, 2, 3, 4, 5]
+# kernel
+kernel = ['linear', 'rbf', 'poly']
+# probability
+probability = [True]
+# Create the random grid
+random_grid = {'C': C,
+              'kernel': kernel,
+              'gamma': gamma,
+              'degree': degree,
+              'probability': probability
+             }
+#create the model
+svc = svm.SVC(random_state=8)
+# Definition of the random search
+random_search = RandomizedSearchCV(estimator=svc, param_distributions=random_grid, n_iter=3, scoring='accuracy', cv=3, verbose=1, random_state=8)
+
+# Fit the random search model
+random_search.fit(x_train, y_train)
+print("The best hyperparameters from Random Search are:")
+print(random_search.best_params_)
+print("")
+print("The mean accuracy of a model with these hyperparameters is:")
+print(random_search.best_score_)
+
+
 
 #Tune paramater with grid_search
-C = [.0001, .001, .01, .1]
-degree = [3, 4, 5]
-gamma = [1, 10, 100]
+def getAP(a,d,n): 
+    res = []
+    curr_term = a
+    res.append(a)
+    for i in range(1,n):
+        curr_term =curr_term + d 
+        res.append(curr_term)
+    return res
+
+C = getAP(.0005, .0005, 3)
+degree = [1, 2, 3]
+gamma = getAP(.005, .005, 3)
 probability = [True]
 
 param_grid = [
-  {'C': C, 'kernel':['linear'], 'probability':probability},
-  {'C': C, 'kernel':['poly'], 'degree':degree, 'probability':probability},
   {'C': C, 'kernel':['rbf'], 'gamma':gamma, 'probability':probability}
 ]
 
@@ -68,17 +107,18 @@ grid_search = GridSearchCV(estimator=svc,
                            verbose=1)
 # Fit the grid search to the data
 grid_search.fit(x_train, y_train)
+print(grid_search.best_params_)
 
 
 # In[ ]:
 
 
 #save the model in best_svc
-best_svc = svm.SVC(C=1.0, break_ties=False, cache_size=200,
+best_svc = svm.SVC(C=0.0005, break_ties=False, cache_size=200,
                                  class_weight=None, coef0=0.0,
                                  decision_function_shape='ovr', degree=3,
-                                 gamma=1, kernel='rbf', max_iter=-1,
-                                 probability=False, random_state=8,
+                                 gamma=0.005, kernel='rbf', max_iter=-1,
+                                 probability=True, random_state=8,
                                  shrinking=True, tol=0.001, verbose=False)
 #fit the training data
 best_svc.fit(x_train,y_train)
