@@ -10,7 +10,7 @@ from sklearn import preprocessing
 from sklearn.decomposition import TruncatedSVD
 
 #Get Access to data
-DATA = Parse('data/', tfidf=True, max_range = 2, min_df = 10)
+DATA = Parse('data/', tfidf=True, min_df = 10, max_features = 7000 )
 
 #Assign features
 bagOfWords = DATA.features[0]
@@ -18,7 +18,8 @@ testBag = DATA.features[1]
 bagNames = DATA.features[2]
 
 #AttemptScaling
-transformer = TruncatedSVD(n_components = 100, n_iter = 10)
+#n_iter = 10
+transformer = TruncatedSVD(n_components = 2807)
 transformer.fit(bagOfWords)
 bagOfWords = transformer.transform(bagOfWords)
 testBag = transformer.transform(testBag)
