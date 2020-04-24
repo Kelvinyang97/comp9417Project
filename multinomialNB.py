@@ -136,7 +136,7 @@ train_results = model.predict(x_train)
 print("The training accuracy for bagging is: ")
 print(accuracy_score(y_train, train_results))
 test_results = model.predict(x_test)
-print("The training accuracy for bagging is: ")
+print("The testing accuracy for bagging is: ")
 print(accuracy_score(y_test, test_results))
 
 
