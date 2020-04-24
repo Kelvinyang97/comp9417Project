@@ -20,7 +20,7 @@ from sklearn.linear_model import LogisticRegression
 
 
 from preproc import preproc
-file = preproc(filepath = '', trainname = 'data/training.csv', testname = 'data/test.csv', tfidf = True, minmax = False, min_range = 1,
+file = preproc(filepath = '', trainname = 'data/training.csv', testname = 'data/test.csv', tfidf = False, minmax = False, min_range = 1,
                  max_range = 1, max_df = 1.0, min_df =1, max_features = None)
 #x_train:bag_of_words
 x_train = file.features[0]
@@ -100,7 +100,6 @@ random_search.fit(x_train, y_train)
 print("The mean accuracy of a model with these hyperparameters is:")
 print(random_search.best_score_)
 
-
 # In[17]:
 
 
@@ -123,6 +122,22 @@ print(accuracy_score(y_train, best_mnbc.predict(x_train)))
 # Test accuracy
 print("The test accuracy is: ")
 print(accuracy_score(y_test, mnbc_pred))
+
+
+from sklearn.model_selection import KFold
+from sklearn.ensemble import BaggingClassifier
+seed = 8
+kfold = KFold(n_splits=10, random_state=seed)
+bagged_base = grid_search.best_estimator_
+num_estimator = 5
+model = BaggingClassifier(base_estimator=bagged_base, n_estimators=num_estimator, random_state=seed)
+model.fit(x_train, y_train)
+train_results = model.predict(x_train)
+print("The training accuracy for bagging is: ")
+print(accuracy_score(y_train, train_results))
+test_results = model.predict(x_test)
+print("The testing accuracy for bagging is: ")
+print(accuracy_score(y_test, test_results))
 
 
 # In[21]:
