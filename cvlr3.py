@@ -1,5 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import output
+import joblib
 from preproc import preproc as Parse
 
 
@@ -48,9 +50,38 @@ listLabels = DATA.labels[2]
 # multi_class = 'auto' --> Ensure multiple classes with multinomial
 # random_state = None (good for ensure consistent build)
 # l1_ratios = None
+try:
+    with open("sciModels/CVLR3.model") as f:
+        
+        CVLRModel = joblib.load(f)
+        
+        print( 'Score on training data: ', CVLRModel.score(bagOfWords, transLabels) )
+        print( 'Score on test data: ', CVLRModel.score(testBag, testLabels) )
 
-CVLRModel = LogisticRegressionCV( n_jobs=-3, multi_class = 'multinomial', max_iter = 2000)
-CVLRModel.fit(bagOfWords, transLabels)
 
-print( 'Score on training data: ', CVLRModel.score(bagOfWords, transLabels) )
-print( 'Score on test data: ', CVLRModel.score(testBag, testLabels) )
+        actual = testLabels
+        pred = CVLRModel.predict(testBag)
+        pred_probs = CVLRModel.predict_proba(testBag)
+
+        output.output_results(actual, pred, pred_probs, listLabels)
+        
+        
+except EnvironmentError:
+
+    CVLRModel = LogisticRegressionCV( n_jobs=-3, multi_class = 'multinomial', max_iter = 2000)
+    CVLRModel.fit(bagOfWords, transLabels)
+    
+    
+    print( 'Score on training data: ', CVLRModel.score(bagOfWords, transLabels) )
+    print( 'Score on test data: ', CVLRModel.score(testBag, testLabels) )
+
+    actual = testLabels
+    pred = CVLRModel.predict(testBag)
+    pred_probs = CVLRModel.predict_proba(testBag)
+
+    output.output_results(actual, pred, pred_probs, listLabels)
+    
+    with open("sciModels/CVLR3.model") as f:
+        joblib.dump(CVLRModel, f)
+        print("Wrote file to sciModels/CVLR3.model")
+

@@ -82,7 +82,7 @@ except EnvironmentError:
     print("Test: ", CV2.score(testBag, testLabels))
     
     with open("sciModels/CV2.model", 'wb') as f:
-        joblib.dump(CV2, "sciModels/CV2.model")
+        joblib.dump(CV2, f)
         print("Wrote file to sciModels/CV2.model")
 
 # base model
