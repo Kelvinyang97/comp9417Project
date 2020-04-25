@@ -4,7 +4,8 @@ from sklearn.metrics import confusion_matrix
 from sklearn.linear_model import LogisticRegression
 
 
-def output_results(actual, predicted, probabilities, label_names, threshold = 0.5, extra_output = True):
+def output_results(actual, predicted, probabilities, label_names, threshold = 0.0, 
+                   extra_output = True, test = True):
     #Takes as inputs a numpy array of actual fitted labels, predited labels, 
     #class probabilities, label names plus a float for prediction threshold,
     #and a boolean to print out extra output if wanted. The output is printed
@@ -39,7 +40,10 @@ def output_results(actual, predicted, probabilities, label_names, threshold = 0.
         
         max_value = max(probabilities[i])
         pred_class = probabilities[i].argmax()
-        max_probs.append([max_value, pred_class, i + 1])
+        if test:
+            max_probs.append([max_value, pred_class, i + 9501])
+        else:
+            max_probs.append([max_value, pred_class, i + 1])
     
     #Sort based on the highest to lowest values
     max_probs = sorted(max_probs, key = lambda x: x[0])[::-1]
@@ -68,7 +72,10 @@ def output_results(actual, predicted, probabilities, label_names, threshold = 0.
             format_precision = '{:.2f}'.format(precision[i] * 100) + '%'
             format_recall = '{:.2f}'.format(recall[i] * 100) + '%'
             format_f1 = '{:.2f}'.format(f1[i] * 100) + '%'
-            format_article = '{:,}'.format(top_10_articles[i][0][2])
+            if len(top_10_articles[i]) == 0:
+                format_article = ''
+            else:
+                format_article = '{:,}'.format(top_10_articles[i][0][2])
             len_fp = len(format_precision)
             len_fr = len(format_recall)
             len_ff = len(format_f1)
@@ -122,24 +129,25 @@ def output_results(actual, predicted, probabilities, label_names, threshold = 0.
     return
 
 
-TRAINCSV = 'training.csv'
-TESTCSV = 'test.csv'
+# TRAINCSV = 'training.csv'
+# TESTCSV = 'test.csv'
 
-#Preprocess features and labels 
-f = preproc(filepath = '', trainname = TRAINCSV, testname = TESTCSV, tfidf = True, max_range = 2, min_df = 10, max_features = 1000)
+# #Preprocess features and labels 
+# f = preproc(filepath = '', trainname = TRAINCSV, testname = TESTCSV, tfidf = True, max_range = 2, min_df = 10, max_features = 1000)
     
-#Store output into variables
-train_features = f.features[0]
-feature_names = f.features[2]
-train_labels = f.labels[0]
-list_of_labels = f.labels[2]
+# #Store output into variables
+# train_features = f.features[0]
+# feature_names = f.features[2]
+# train_labels = f.labels[0]
+# list_of_labels = f.labels[2]
 
-#Run logistic regression
-#Note this can be changed to any model
-model1 = LogisticRegression(random_state=0, max_iter = 250).fit(train_features, train_labels)
-pred = model1.predict(train_features)
-pred_probs = model1.predict_proba(train_features)
+# #Run logistic regression
+# #Note this can be changed to any model
+# model1 = LogisticRegression(random_state=0, max_iter = 250).fit(train_features, train_labels)
+# pred = model1.predict(train_features)
+# pred_probs = model1.predict_proba(train_features)
 
-#Output results
-output_results(train_labels, pred, pred_probs, list_of_labels, threshold = 0.2)
+# #Output results
+# output_results(train_labels, pred, pred_probs, list_of_labels, threshold = 0.0, 
+#                extra_output = False, test = False)
 
