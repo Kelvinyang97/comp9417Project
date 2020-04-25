@@ -51,7 +51,7 @@ listLabels = DATA.labels[2]
 # random_state = None (good for ensure consistent build)
 # l1_ratios = None
 try:
-    with open("sciModels/CVLR3.model") as f:
+    with open("sciModels/CVLR3.model", 'rb') as f:
         
         CVLRModel = joblib.load(f)
         
@@ -81,7 +81,7 @@ except EnvironmentError:
 
     output.output_results(actual, pred, pred_probs, listLabels)
     
-    with open("sciModels/CVLR3.model") as f:
+    with open("sciModels/CVLR3.model", 'wb') as f:
         joblib.dump(CVLRModel, f)
         print("Wrote file to sciModels/CVLR3.model")
 

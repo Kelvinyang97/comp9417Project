@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import output
 import joblib
 from preproc import preproc as Parse
 
@@ -57,13 +58,19 @@ try:
         CV2 = joblib.load(f)
         
         #### FIRST MODEL ####
-        print("1:NEWTON-CG")
-        print("C_: ")
-        print(CV2.C_)
-        print("Scores_")
-        print(CV2.scores_)
+        print("1:LBFGS")
+        #print("C_: ")
+        #print(CV2.C_)
+        #print("Scores_")
+        #print(CV2.scores_)
         print("Train: ", CV2.score(bagOfWords, transLabels))
         print("Test: ", CV2.score(testBag, testLabels))
+        
+        actual = testLabels
+        pred = CV2.predict(testBag)
+        pred_probs = CV2.predict_proba(testBag)
+
+        output.output_results(actual, pred, pred_probs, listLabels)
         
 except EnvironmentError:
     print("Made it here!")
@@ -72,37 +79,24 @@ except EnvironmentError:
     
     #### SECOND MODEL ####
     print("2:LBFGS")
-    print("Cs_: ")
-    print(CV2.Cs_)
-    print("Scores_")
-    print(CV2.scores_)
-    print("classes_")
-    print(CV2.classes_)
+    #print("Cs_: ")
+    #print(CV2.Cs_)
+    #print("Scores_")
+    #print(CV2.scores_)
+    #print("classes_")
+    #print(CV2.classes_)
     print("Train: ", CV2.score(bagOfWords, transLabels))
     print("Test: ", CV2.score(testBag, testLabels))
+    
+    actual = testLabels
+    pred = CV2.predict(testBag)
+    pred_probs = CV2.predict_proba(testBag)
+
+    output.output_results(actual, pred, pred_probs, listLabels)
     
     with open("sciModels/CV2.model", 'wb') as f:
         joblib.dump(CV2, f)
         print("Wrote file to sciModels/CV2.model")
-
-# base model
-
-#CV4 = LogisticRegressionCV(n_jobs=-1, Cs=Cs, solver='saga', multi_class = 'multinomial', max_iter = 1000)
-
-
-#CV4.fit(bagOfWords, transLabels)
-
-
-
-
-#### FOURTH MODEL ####
-#print("4:SAGA")
-#print("C_: ")
-#print(CV4.C_)
-#print("Scores_")
-#print(CV4.scores_)
-#print("Train: ", CV4.score(bagOfWords, transLabels))
-#print("Test: ", CV4.score(testBag, testLabels))
 
 
 
