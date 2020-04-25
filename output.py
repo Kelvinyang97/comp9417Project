@@ -129,6 +129,7 @@ def output_results(actual, predicted, probabilities, label_names, threshold = 0.
     return
 
 
+<<<<<<< HEAD
 # TRAINCSV = 'training.csv'
 # TESTCSV = 'test.csv'
 
@@ -150,4 +151,26 @@ def output_results(actual, predicted, probabilities, label_names, threshold = 0.
 # #Output results
 # output_results(train_labels, pred, pred_probs, list_of_labels, threshold = 0.0, 
 #                extra_output = False, test = False)
+=======
+#TRAINCSV = 'training.csv'
+#TESTCSV = 'test.csv'
+#
+##Preprocess features and labels
+#f = preproc(filepath = '', trainname = TRAINCSV, testname = TESTCSV, tfidf = True, max_range = 2, min_df = 10, max_features = 1000)
+#
+##Store output into variables
+#train_features = f.features[0]
+#feature_names = f.features[2]
+#train_labels = f.labels[0]
+#list_of_labels = f.labels[2]
+#
+##Run logistic regression
+##Note this can be changed to any model
+#model1 = LogisticRegression(random_state=0, max_iter = 250).fit(train_features, train_labels)
+#pred = model1.predict(train_features)
+#pred_probs = model1.predict_proba(train_features)
+#
+##Output results
+#output_results(train_labels, pred, pred_probs, list_of_labels, threshold = 0.2)
+>>>>>>> 461de3131cb6e46f84338c525b67e226549cc934
 
