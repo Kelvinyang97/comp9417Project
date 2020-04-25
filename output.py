@@ -119,7 +119,10 @@ def output_results(actual, predicted, probabilities, label_names, threshold = 0.
             for j in range(len(top_10_articles[i])):
                 suggested_article_pred_prob = '{:.2f}'.format(top_10_articles[i][j][0] * 100) + '%'
                 pred_class = top_10_articles[i][j][1]
-                article_number = top_10_articles[i][j][2]
+                if test:
+                    article_number = top_10_articles[i][j][2] - 9500
+                else:
+                    article_number = top_10_articles[i][j][2]
                 actual_class = actual[article_number - 1]
                 actual_article_pred_prob = '{:.2f}'.format(probabilities[article_number - 1][actual_class] * 100) + '%'
                 if pred_class != actual_class:
@@ -149,6 +152,6 @@ def output_results(actual, predicted, probabilities, label_names, threshold = 0.
 # pred_probs = model1.predict_proba(train_features)
 
 # #Output results
-# output_results(train_labels, pred, pred_probs, list_of_labels, threshold = 0.0, 
-#                extra_output = False, test = False)
+# output_results(train_labels, pred, pred_probs, list_of_labels, threshold = 0.8, 
+#                 extra_output = True, test = False)
 
