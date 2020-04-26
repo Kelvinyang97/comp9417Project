@@ -63,13 +63,15 @@ try:
         #print(CV2.C_)
         #print("Scores_")
         #print(CV2.scores_)
-        print("Train: ", CV2.score(bagOfWords, transLabels))
-        print("Test: ", CV2.score(testBag, testLabels))
+#        print("Train: ", CV2.score(bagOfWords, transLabels))
+#        print("Test: ", CV2.score(testBag, testLabels))
         
         actual = testLabels
         pred = CV2.predict(testBag)
         pred_probs = CV2.predict_proba(testBag)
 
+        print(classification_report(testLabels, pred))
+        
         output.output_results(actual, pred, pred_probs, listLabels)
         
 except EnvironmentError:
